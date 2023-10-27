@@ -1,0 +1,4 @@
+Upstream: system76/master
+
+To flash:
+qmk flash -kb system76/launch_1 -km jasonish
