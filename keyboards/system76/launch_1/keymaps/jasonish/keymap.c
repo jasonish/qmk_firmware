@@ -44,13 +44,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [1] = LAYOUT(
     QK_BOOT, _______, _______, _______, _______, _______,   /**/ _______, _______, _______, _______, _______, _______, _______, KC_INS ,  KC_MPLY,
-    _______, _______, _______, _______, _______, _______,   /**/ _______, _______, _______, _______, _______, _______, _______, _______,  KC_VOLU,
+    _______, _______, _______, _______, _______, _______,   /**/ _______, _______, _______, _______, _______, _______, _______, KC_UNDO,  KC_VOLU,
     _______, _______, _______, _______, _______, _______,   /**/ RGB_TOG, RGB_VAI, RGB_HUI, RGB_SAI, RGB_SPI, _______, _______, _______,  KC_VOLD,
     _______, _______, _______, _______, _______, _______,   /**/ KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, _______, _______, _______,           KC_MUTE,
     _______, _______, _______, _______, _______, _______,   /**/ KC_HOME, KC_PGDN, KC_PGUP, KC_END , _______, _______,          _______,
              _______, _______, _______, _______, _______,   /**/          _______, _______, _______, _______,          _______, _______, _______
   ),
 };
+
+#include "achordion.h"
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -63,6 +65,66 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     default:
 	break;
     }
+    if (!process_achordion(keycode, record)) {
+	return false;
+    }
 
     return true;
 }
+
+bool achordion_chord(uint16_t tap_hold_keycode,
+                     keyrecord_t* tap_hold_record,
+                     uint16_t other_keycode,
+                     keyrecord_t* other_record) {
+#if 0
+  // Exceptionally consider the following chords as holds, even though they
+  // are on the same hand in Dvorak.
+  switch (tap_hold_keycode) {
+    case HOME_A:  // A + U.
+      if (other_keycode == HOME_U) { return true; }
+      break;
+
+    case HOME_S:  // S + H and S + G.
+      if (other_keycode == HOME_H || other_keycode == KC_G) { return true; }
+      break;
+  }
+
+#endif
+
+  // Achordion picks up H as being on the same side as A, so fix this
+  // case.
+  if (tap_hold_keycode == _A && other_keycode == KC_H) {
+      return true;
+  }
+
+  // Allow NAV_SPC to work on all sides.
+  if (tap_hold_keycode == NAV_SPC) {
+      return true;
+  }
+
+
+  // This from the Achordion docs.
+  if (other_record->event.key.row % (MATRIX_ROWS) >= 4) { return true; }
+
+  // Otherwise, follow the opposite hands rule.
+  return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+#if 0
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
+  // If you quickly hold a tap-hold key after tapping it, the tap action is
+  // repeated. Key repeating is useful e.g. for Vim navigation keys, but can
+  // lead to missed triggers in fast typing. Here, returning 0 means we
+  // instead want to "force hold" and disable key repeating.
+  switch (keycode) {
+    case HOME_N:
+    // Repeating is useful for Vim navigation keys.
+    case QHOME_J:
+    case QHOME_K:
+    case QHOME_L:
+      return QUICK_TAP_TERM;  // Enable key repeating.
+    default:
+      return 0;  // Otherwise, force hold and disable key repeating.
+  }
+}
+#endif
