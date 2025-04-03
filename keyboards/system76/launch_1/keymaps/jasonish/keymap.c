@@ -28,7 +28,7 @@
 #define _J RCTL_T(KC_J)
 #define _K RSFT_T(KC_K)
 #define _L LALT_T(KC_L)
-#define _SCLN RGUI_T(KC_SCLN)
+#define _SCLN LGUI_T(KC_SCLN)
 
 #define NAV_SPC LT(1, KC_SPC)
 
@@ -43,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [1] = LAYOUT(
-    QK_BOOT, _______, _______, _______, _______, _______,   /**/ _______, _______, _______, _______, _______, _______, _______, KC_INS ,  KC_MPLY,
+    QK_BOOT, _______, _______, _______, _______, _______,   /**/ _______, _______, _______, _______, _______, _______, KC_PSCR, KC_INS ,  KC_MPLY,
     _______, _______, _______, _______, _______, _______,   /**/ _______, _______, _______, _______, _______, _______, _______, KC_UNDO,  KC_VOLU,
     _______, _______, _______, _______, _______, _______,   /**/ RGB_TOG, RGB_VAI, RGB_HUI, RGB_SAI, RGB_SPI, _______, _______, _______,  KC_VOLD,
     _______, _______, _______, _______, _______, _______,   /**/ KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, _______, _______, _______,           KC_MUTE,
@@ -53,6 +53,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 #include "achordion.h"
+
+void bootmagic_lite_reset_eeprom(void);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
