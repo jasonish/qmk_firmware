@@ -43,3 +43,19 @@
 #    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 
 #endif
+
+// Fixes j/k in Gmail when home row mods are enabled.
+#define TAP_CODE_DELAY 30
+
+// Boring LEDs by default.
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
+#define RGB_MATRIX_DEFAULT_HUE 0
+#define RGB_MATRIX_DEFAULT_SAT 0
+#define RGB_MATRIX_DEFAULT_VAL 100
+#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define RGB_MATRIX_KEYPRESSES
+#define DISABLE_RGB_MATRIX_ANIMATIONS
+
+#define CHORDAL_HOLD
+#define TAPPING_TERM 220
+//#define PERMISSIVE_HOLD
