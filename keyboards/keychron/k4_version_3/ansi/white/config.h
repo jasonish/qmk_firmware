@@ -19,12 +19,12 @@
 #ifdef LED_MATRIX_ENABLE
 /* LED matrix driver configuration */
 #    define SNLED27351_SELECT_PINS \
-        { B9 }
+        { A15 }
 
 /* LED Matrix Current Configuration */
 #    define SNLED27351_PHASE_CHANNEL SNLED27351_SCAN_PHASE_7_CHANNEL
 #    define SNLED27351_CURRENT_TUNE \
-        { 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50 }
+        { 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A, 0x6A }
 
 /* LED Matrix Configuration */
 #    define LED_MATRIX_LED_COUNT 100

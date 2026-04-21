@@ -16,23 +16,14 @@
 
 #pragma once
 
-#ifdef LED_MATRIX_ENABLE
-/* LED matrix driver configuration */
-#    define SNLED27351_SELECT_PINS \
-        { B9 }
+#define _CHIBIOS_HAL_CONF_VER_8_4_
 
-/* LED Matrix Current Configuration */
-#    define SNLED27351_PHASE_CHANNEL SNLED27351_SCAN_PHASE_7_CHANNEL
-#    define SNLED27351_CURRENT_TUNE \
-        { 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50 }
+#define HAL_USE_SPI TRUE
+#define HAL_USE_I2C TRUE
 
-/* LED Matrix Configuration */
-#    define LED_MATRIX_LED_COUNT 100
-
-/* Indications */
-#    define CAPS_LOCK_INDEX 54
-#    define NUM_LOCK_INDEX 32
-#    define LOW_BAT_IND_INDEX \
-        { 91 }
-
+#ifdef LK_WIRELESS_ENABLE
+#    define HAL_USE_RTC TRUE
+#    define PAL_USE_CALLBACKS TRUE
 #endif
+
+#include_next <halconf.h>

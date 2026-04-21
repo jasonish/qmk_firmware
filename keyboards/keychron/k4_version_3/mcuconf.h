@@ -16,23 +16,23 @@
 
 #pragma once
 
-#ifdef LED_MATRIX_ENABLE
-/* LED matrix driver configuration */
-#    define SNLED27351_SELECT_PINS \
-        { B9 }
+#include_next <mcuconf.h>
 
-/* LED Matrix Current Configuration */
-#    define SNLED27351_PHASE_CHANNEL SNLED27351_SCAN_PHASE_7_CHANNEL
-#    define SNLED27351_CURRENT_TUNE \
-        { 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50 }
+#undef WB32_I2C_USE_I2C1
+#define WB32_I2C_USE_I2C1 TRUE
 
-/* LED Matrix Configuration */
-#    define LED_MATRIX_LED_COUNT 100
+#undef WB32_SPI_USE_QSPI
+#define WB32_SPI_USE_QSPI TRUE
 
-/* Indications */
-#    define CAPS_LOCK_INDEX 54
-#    define NUM_LOCK_INDEX 32
-#    define LOW_BAT_IND_INDEX \
-        { 91 }
+/* Enable LSI */
+#undef WB32_LSI_ENABLED
+#define WB32_LSI_ENABLED TRUE
 
-#endif
+/* RTC driver system settings. */
+#define WB32_RTCSEL WB32_RTCSEL_HSEDIV
+#define WB32_RTCLP_SEL WB32_RTCSEL_LSI
+#define WB32_RTCAlarm_IRQ_PRIORITY         14
+#define WB32_RTC_IRQ_PRIORITY              15
+
+/* Enable EXTI */
+#define WB32_EXTI_REQUIRED

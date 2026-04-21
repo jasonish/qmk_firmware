@@ -16,23 +16,22 @@
 
 #pragma once
 
-#ifdef LED_MATRIX_ENABLE
-/* LED matrix driver configuration */
+#ifdef RGB_MATRIX_ENABLE
+/* RGB Matrix driver configuration */
 #    define SNLED27351_SELECT_PINS \
-        { B9 }
+        { C11, C13 }
 
-/* LED Matrix Current Configuration */
-#    define SNLED27351_PHASE_CHANNEL SNLED27351_SCAN_PHASE_7_CHANNEL
+/* RGB Matrix Current Configuration */
 #    define SNLED27351_CURRENT_TUNE \
-        { 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50, 0x50 }
+        { 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30 }
 
-/* LED Matrix Configuration */
-#    define LED_MATRIX_LED_COUNT 100
+/* RGB Matrix Configuration */
+#    define RGB_MATRIX_LED_COUNT 103
 
 /* Indications */
-#    define CAPS_LOCK_INDEX 54
-#    define NUM_LOCK_INDEX 32
+#    define CAPS_LOCK_INDEX 56
+#    define NUM_LOCK_INDEX 34
 #    define LOW_BAT_IND_INDEX \
-        { 91 }
+        { 93 }
 
 #endif
