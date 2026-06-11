@@ -71,12 +71,15 @@ enum {
     LKBT51_CMD_SEND_FN       = 0x15, // Not used currently
     LKBT51_CMD_SEND_MOUSE    = 0x16,
     LKBT51_CMD_SEND_BOOT_KB  = 0x17,
+    LKBT51_CMD_SEND_JOYSTICK = 0x18,
+    LKBT51_CMD_SEND_XINPUT   = 0x19,
     /* Bluetooth connections */
     LKBT51_CMD_PAIRING        = 0x21,
     LKBT51_CMD_CONNECT        = 0x22,
     LKBT51_CMD_DISCONNECT     = 0x23,
     LKBT51_CMD_SWITCH_HOST    = 0x24,
     LKBT51_CMD_READ_STATE_REG = 0x25,
+    LKBT51_CMD_XINPUT         = 0x26,
     /* Battery */
     LKBT51_CMD_BATTERY_MANAGE = 0x31,
     LKBT51_CMD_UPDATE_BAT_LVL = 0x32,
@@ -146,6 +149,7 @@ enum{
     LK_EVT_MSK_BATT = 0x01 << 2,
     LK_EVT_MSK_RESET = 0x01 << 3,
     LK_EVT_MSK_RPT_INTERVAL = 0x01 << 4,
+    LK_EVT_MSK_XINPUT = 0x01 << 6,
     LK_EVT_MSK_MD = 0x01 << 7,
 };
 
@@ -173,7 +177,15 @@ wt_func_t wireless_transport = {
     lkbt51_send_consumer,
     lkbt51_send_system,
     lkbt51_send_mouse,
+#ifdef JOYSTICK_ENABLE
+    lkbt51_send_joysticks,
+#endif
+#ifdef XINPUT_ENABLE
+    lkbt51_send_xinput,
+#endif
+#ifdef RAW_ENABLE
     lkbt51_send_raw_hid,
+#endif
     lkbt51_update_bat_lvl,
     lkbt51_task
 };
@@ -422,6 +434,28 @@ void lkbt51_send_mouse(uint8_t* report) {
     lkbt51_send_cmd(payload, i, false, false);
 }
 
+void lkbt51_send_joysticks(uint8_t* report) {
+    uint8_t i = 0;
+    memset(payload, 0, PACKET_MAX_LEN);
+
+    payload[i++] = LKBT51_CMD_SEND_JOYSTICK;
+    memcpy(payload + i, report, 10);
+    i += 10;
+
+    lkbt51_send_cmd(payload, i, false, false);
+}
+
+void lkbt51_send_xinput(uint8_t* report) {
+    uint8_t i = 0;
+    memset(payload, 0, PACKET_MAX_LEN);
+
+    payload[i++] = LKBT51_CMD_SEND_XINPUT;
+    memcpy(payload + i, report, 20);
+    i += 20;
+
+    lkbt51_send_cmd(payload, i, false, false);
+}
+
 void lkbt51_send_raw_hid(uint8_t* data, uint8_t len) {
     uint8_t i = 0;
     memset(payload, 0, PACKET_MAX_LEN);
@@ -523,6 +557,16 @@ void lkbt51_read_state_reg(uint8_t reg, uint8_t len) {
     payload[i++]              = len;
 
     // TODO
+    lkbt51_send_cmd(payload, i, false, false);
+}
+
+void lkbt51_set_xinput_mode(bool enable) {
+    uint8_t i = 0;
+    memset(payload, 0, PACKET_MAX_LEN);
+
+    payload[i++] = LKBT51_CMD_XINPUT;
+    payload[i++] = enable;
+
     lkbt51_send_cmd(payload, i, false, false);
 }
 
@@ -888,7 +932,7 @@ void lkbt51_task(void) {
                         event.evt_type = EVT_DISCONNECTED;
                         if (factory_reset_timer && timer_elapsed32(factory_reset_timer) < 3000) {
                             factory_reset_timer = 0;
-                            event.data    = 1;
+                            event.data          = 1;
                         }
                         break;
                     case LKBT51_PINCODE_ENTRY:
@@ -969,8 +1013,8 @@ void lkbt51_task(void) {
         gpio_write_pin_low(LKBT51_RESET_PIN);
         wait_ms(10);
         gpio_write_pin_high(LKBT51_RESET_PIN);
-        //rgb_matrix_set_color_all(255, 0, 0);
-        //rgb_matrix_driver.flush();
+        // rgb_matrix_set_color_all(255, 0, 0);
+        // rgb_matrix_driver.flush();
         wait_ms(200);
         lkbt51_connect(0, 0);
         lkbt51_last_comm_time = 0;
