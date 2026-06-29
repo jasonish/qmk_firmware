@@ -119,8 +119,9 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef QUICK_TAP_TERM_PER_KEY
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    (void)keycode;
     (void)record;
-    return is_home_row_mod(keycode) ? 0 : QUICK_TAP_TERM;
+    return QUICK_TAP_TERM;
 }
 #endif
 
