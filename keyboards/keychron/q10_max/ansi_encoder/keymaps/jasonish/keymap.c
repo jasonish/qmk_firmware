@@ -22,10 +22,12 @@ enum layers {
     MAC_FN,
     WIN_BASE,
     WIN_FN,
+    NAV,
 };
 
-#define FN_MAC MO(MAC_FN)
-#define FN_WIN MO(WIN_FN)
+#define FN_MAC  MO(MAC_FN)
+#define FN_WIN  MO(WIN_FN)
+#define NAV_SPC LT(NAV, KC_SPC)
 
 /* GASC home row mods: GUI, Alt, Shift, Ctrl from pinky to index. */
 #define HM_A    LGUI_T(KC_A)
@@ -146,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F14,   KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,      KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
         KC_F15,   KC_CAPS,  HM_A,     HM_S,     HM_D,     HM_F,     KC_G,      KC_H,     HM_J,     HM_K,     HM_L,     HM_SCLN,  KC_QUOT,            KC_ENT,             KC_HOME,
         KC_F16,   KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,      KC_B,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  KC_UP,
-        KC_F17,   KC_LCTL,  KC_LALT,            KC_LWIN,  KC_SPC,   KC_LWIN,                       KC_SPC,             FN_WIN,   KC_RCTL,            KC_LEFT,  KC_DOWN,  KC_RGHT),
+        KC_F17,   KC_LCTL,  KC_LALT,            KC_LWIN,  NAV_SPC,  KC_LWIN,                       KC_SPC,             FN_WIN,   KC_RCTL,            KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_FN] = LAYOUT_ansi_90(
         UG_TOGG,  _______,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  UG_VALD,   UG_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,            _______,
@@ -155,6 +157,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  UG_PREV,  UG_VALD,  UG_HUED,  UG_SATD,  UG_SPDD,   _______,  _______,  _______,  _______,  _______,  _______,            _______,            KC_END,
         _______,  _______,            _______,  _______,  _______,  _______,   BAT_LVL,  BAT_LVL,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         QK_BOOT,  _______,  _______,            _______,  _______,  _______,                       _______,            _______,  _______,            _______,  _______,  _______),
+
+    [NAV] = LAYOUT_ansi_90(
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  _______,  _______,            _______,            KC_END,
+        _______,  _______,            _______,  _______,  _______,  _______,   _______,  _______,  KC_HOME,  KC_PGDN,  KC_PGUP,  KC_END,   _______,  _______,  _______,
+        _______,  _______,  _______,            _______,  _______,  _______,                       _______,            _______,  _______,            _______,  _______,  _______),
 };
 
 #if defined(ENCODER_MAP_ENABLE)
@@ -162,6 +172,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [MAC_FN]   = {ENCODER_CCW_CW(UG_VALD, UG_VALU)},
     [WIN_BASE] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [WIN_FN]   = {ENCODER_CCW_CW(UG_VALD, UG_VALU)}
+    [WIN_FN]   = {ENCODER_CCW_CW(UG_VALD, UG_VALU)},
+    [NAV]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)}
 };
 #endif // ENCODER_MAP_ENABLE

@@ -1,0 +1,2 @@
+- Unless otherwise told, we are working on the keymap at keyboards/keychron/q10_max/ansi_encoder/keymaps/jasonish.
+- Leave the MAC_BASE and MAC_FN layers alone. WIN_BASE is my default layer.
